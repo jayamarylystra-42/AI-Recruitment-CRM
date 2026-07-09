@@ -30,25 +30,42 @@ export function getGmailDiagnosticsState() {
 }
 
 export function getRedirectUri(): string {
-  const domain = process.env.REPLIT_DOMAINS?.split(",")[0]?.trim();
-  if (domain) {
-    return `https://${domain}/api/gmail/callback`;
+
+  // Always prefer the production domain if available.
+  const productionDomain =
+    process.env.REPLIT_DOMAINS?.split(",")[0]?.trim();
+
+  if (productionDomain) {
+    return `https://${productionDomain}/api/gmail/callback`;
   }
 
   const devDomain = process.env.REPLIT_DEV_DOMAIN;
+
   if (devDomain) {
     return `https://${devDomain}/api/gmail/callback`;
   }
 
-  return "http://localhost:5000/api/gmail/callback";
+  throw new Error(
+    "No REPLIT_DOMAINS or REPLIT_DEV_DOMAIN configured."
+  );
 }
 
-export function getFrontendUrl(): string {
-  if (process.env.NODE_ENV === "production") {
-    const domain = process.env.REPLIT_DOMAINS?.split(",")[0]?.trim();
-    return `https://${domain}`;
+export function getFrontendUrl() {
+
+  const productionDomain =
+    process.env.REPLIT_DOMAINS?.split(",")[0]?.trim();
+
+  if (productionDomain) {
+    return `https://${productionDomain}`;
   }
-  return `https://${process.env.REPLIT_DEV_DOMAIN}`;
+
+  if (process.env.REPLIT_DEV_DOMAIN) {
+    return `https://${process.env.REPLIT_DEV_DOMAIN}`;
+  }
+
+  throw new Error(
+    "No frontend domain configured."
+  );
 }
 
 export function createOAuthClient(tokens?: {
