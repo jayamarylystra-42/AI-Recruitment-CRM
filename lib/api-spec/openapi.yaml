@@ -1,0 +1,899 @@
+openapi: 3.1.0
+info:
+  title: Api
+  version: 0.1.0
+  description: AI-Powered Client Acquisition & Recruitment Outreach System API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: companies
+    description: Company management
+  - name: campaigns
+    description: Campaign management
+  - name: emails
+    description: Email management
+  - name: ai
+    description: AI analysis and email generation
+  - name: analytics
+    description: Analytics and reports
+  - name: activities
+    description: Activity log
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  # --- Companies ---
+  /companies:
+    get:
+      operationId: listCompanies
+      tags: [companies]
+      summary: List companies with filtering and search
+      parameters:
+        - name: search
+          in: query
+          schema: { type: string }
+        - name: sector
+          in: query
+          schema: { type: string }
+        - name: priority
+          in: query
+          schema: { type: string }
+        - name: status
+          in: query
+          schema: { type: string }
+        - name: hiringNow
+          in: query
+          schema: { type: string }
+        - name: potentialClient
+          in: query
+          schema: { type: string }
+        - name: limit
+          in: query
+          schema: { type: integer }
+        - name: offset
+          in: query
+          schema: { type: integer }
+      responses:
+        "200":
+          description: List of companies
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CompanyListResponse"
+    post:
+      operationId: createCompany
+      tags: [companies]
+      summary: Create a new company
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CompanyInput"
+      responses:
+        "201":
+          description: Created company
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Company"
+
+  /companies/{id}:
+    get:
+      operationId: getCompany
+      tags: [companies]
+      summary: Get company by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Company details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Company"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    patch:
+      operationId: updateCompany
+      tags: [companies]
+      summary: Update a company
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CompanyUpdate"
+      responses:
+        "200":
+          description: Updated company
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Company"
+    delete:
+      operationId: deleteCompany
+      tags: [companies]
+      summary: Delete a company
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "204":
+          description: Deleted
+
+  /companies/bulk-delete:
+    post:
+      operationId: bulkDeleteCompanies
+      tags: [companies]
+      summary: Delete multiple companies
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BulkDeleteInput"
+      responses:
+        "200":
+          description: Delete result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulkDeleteResult"
+
+  /companies/import:
+    post:
+      operationId: importCompanies
+      tags: [companies]
+      summary: Import companies from JSON (parsed from Excel/CSV)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CompanyImportInput"
+      responses:
+        "200":
+          description: Import result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImportResult"
+
+  # --- AI Features ---
+  /ai/analyze-company/{id}:
+    post:
+      operationId: analyzeCompany
+      tags: [ai]
+      summary: Run Gemini AI analysis on a company
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: AI analysis result saved and returned
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AIAnalysis"
+
+  /ai/generate-email:
+    post:
+      operationId: generateEmail
+      tags: [ai]
+      summary: Generate an AI-powered outreach email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmailGenerationInput"
+      responses:
+        "200":
+          description: Generated email
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneratedEmail"
+
+  /ai/chat:
+    post:
+      operationId: aiChat
+      tags: [ai]
+      summary: Chat with AI assistant
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AIChatInput"
+      responses:
+        "200":
+          description: AI response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AIChatResponse"
+
+  # --- Campaigns ---
+  /campaigns:
+    get:
+      operationId: listCampaigns
+      tags: [campaigns]
+      summary: List all campaigns
+      responses:
+        "200":
+          description: List of campaigns
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Campaign"
+    post:
+      operationId: createCampaign
+      tags: [campaigns]
+      summary: Create a new campaign
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CampaignInput"
+      responses:
+        "201":
+          description: Created campaign
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Campaign"
+
+  /campaigns/{id}:
+    get:
+      operationId: getCampaign
+      tags: [campaigns]
+      summary: Get campaign by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Campaign details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Campaign"
+    patch:
+      operationId: updateCampaign
+      tags: [campaigns]
+      summary: Update a campaign
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CampaignUpdate"
+      responses:
+        "200":
+          description: Updated campaign
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Campaign"
+    delete:
+      operationId: deleteCampaign
+      tags: [campaigns]
+      summary: Delete a campaign
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "204":
+          description: Deleted
+
+  /campaigns/{id}/status:
+    patch:
+      operationId: updateCampaignStatus
+      tags: [campaigns]
+      summary: Update campaign status (start/pause/resume/stop)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CampaignStatusUpdate"
+      responses:
+        "200":
+          description: Updated campaign
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Campaign"
+
+  # --- Emails ---
+  /emails:
+    get:
+      operationId: listEmails
+      tags: [emails]
+      summary: List emails
+      parameters:
+        - name: campaignId
+          in: query
+          schema: { type: integer }
+        - name: companyId
+          in: query
+          schema: { type: integer }
+        - name: status
+          in: query
+          schema: { type: string }
+        - name: limit
+          in: query
+          schema: { type: integer }
+        - name: offset
+          in: query
+          schema: { type: integer }
+      responses:
+        "200":
+          description: List of emails
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Email"
+    post:
+      operationId: createEmail
+      tags: [emails]
+      summary: Create/save an email draft
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmailInput"
+      responses:
+        "201":
+          description: Created email
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Email"
+
+  /emails/{id}:
+    get:
+      operationId: getEmail
+      tags: [emails]
+      summary: Get email by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Email details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Email"
+    patch:
+      operationId: updateEmail
+      tags: [emails]
+      summary: Update an email
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmailUpdate"
+      responses:
+        "200":
+          description: Updated email
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Email"
+    delete:
+      operationId: deleteEmail
+      tags: [emails]
+      summary: Delete an email
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "204":
+          description: Deleted
+
+  /emails/{id}/send:
+    post:
+      operationId: sendEmail
+      tags: [emails]
+      summary: Mark email as sent (simulate send)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Email sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Email"
+
+  # --- Analytics ---
+  /analytics/dashboard:
+    get:
+      operationId: getDashboardStats
+      tags: [analytics]
+      summary: Get dashboard summary statistics
+      responses:
+        "200":
+          description: Dashboard stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardStats"
+
+  /analytics/companies-by-sector:
+    get:
+      operationId: getCompaniesBySector
+      tags: [analytics]
+      summary: Company count grouped by sector
+      responses:
+        "200":
+          description: Companies by sector
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GroupedCount"
+
+  /analytics/companies-by-priority:
+    get:
+      operationId: getCompaniesByPriority
+      tags: [analytics]
+      summary: Company count grouped by priority
+      responses:
+        "200":
+          description: Companies by priority
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GroupedCount"
+
+  /analytics/email-status:
+    get:
+      operationId: getEmailStatusBreakdown
+      tags: [analytics]
+      summary: Email counts by status
+      responses:
+        "200":
+          description: Email status breakdown
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GroupedCount"
+
+  /analytics/monthly-campaigns:
+    get:
+      operationId: getMonthlyCampaigns
+      tags: [analytics]
+      summary: Campaign counts by month (last 6 months)
+      responses:
+        "200":
+          description: Monthly campaigns
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MonthlyCount"
+
+  /analytics/top-companies:
+    get:
+      operationId: getTopPriorityCompanies
+      tags: [analytics]
+      summary: Top priority companies
+      responses:
+        "200":
+          description: Top priority companies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Company"
+
+  /analytics/recent-companies:
+    get:
+      operationId: getRecentCompanies
+      tags: [analytics]
+      summary: Recently added companies
+      responses:
+        "200":
+          description: Recent companies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Company"
+
+  # --- Activities ---
+  /activities:
+    get:
+      operationId: listActivities
+      tags: [activities]
+      summary: List recent activity log entries
+      parameters:
+        - name: limit
+          in: query
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Activities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Activity"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status: { type: string }
+      required: [status]
+
+    ErrorResponse:
+      type: object
+      properties:
+        error: { type: string }
+      required: [error]
+
+    Company:
+      type: object
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        industry: { type: ["string", "null"] }
+        sector: { type: ["string", "null"] }
+        email: { type: ["string", "null"] }
+        website: { type: ["string", "null"] }
+        linkedin: { type: ["string", "null"] }
+        city: { type: ["string", "null"] }
+        contactPerson: { type: ["string", "null"] }
+        employees: { type: ["integer", "null"] }
+        openPositions: { type: ["integer", "null"] }
+        hiringNow: { type: ["boolean", "null"] }
+        recruitmentIntensity: { type: ["string", "null"] }
+        potentialClient: { type: ["boolean", "null"] }
+        priority: { type: ["string", "null"] }
+        status: { type: ["string", "null"] }
+        aiRecommendation: { type: ["string", "null"] }
+        aiSummary: { type: ["string", "null"] }
+        aiLeadScore: { type: ["integer", "null"] }
+        aiPriorityScore: { type: ["integer", "null"] }
+        aiHiringProbability: { type: ["integer", "null"] }
+        aiEmailTone: { type: ["string", "null"] }
+        aiNextAction: { type: ["string", "null"] }
+        aiAnalyzedAt: { type: ["string", "null"], format: date-time }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+      required: [id, name, createdAt, updatedAt]
+
+    CompanyInput:
+      type: object
+      properties:
+        name: { type: string }
+        industry: { type: string }
+        sector: { type: string }
+        email: { type: string }
+        website: { type: string }
+        linkedin: { type: string }
+        city: { type: string }
+        contactPerson: { type: string }
+        employees: { type: integer }
+        openPositions: { type: integer }
+        hiringNow: { type: boolean }
+        recruitmentIntensity: { type: string }
+        potentialClient: { type: boolean }
+        priority: { type: string }
+        status: { type: string }
+      required: [name]
+
+    CompanyUpdate:
+      type: object
+      properties:
+        name: { type: string }
+        industry: { type: string }
+        sector: { type: string }
+        email: { type: string }
+        website: { type: string }
+        linkedin: { type: string }
+        city: { type: string }
+        contactPerson: { type: string }
+        employees: { type: integer }
+        openPositions: { type: integer }
+        hiringNow: { type: boolean }
+        recruitmentIntensity: { type: string }
+        potentialClient: { type: boolean }
+        priority: { type: string }
+        status: { type: string }
+
+    CompanyListResponse:
+      type: object
+      properties:
+        companies:
+          type: array
+          items:
+            $ref: "#/components/schemas/Company"
+        total: { type: integer }
+        limit: { type: integer }
+        offset: { type: integer }
+      required: [companies, total, limit, offset]
+
+    BulkDeleteInput:
+      type: object
+      properties:
+        ids:
+          type: array
+          items: { type: integer }
+      required: [ids]
+
+    BulkDeleteResult:
+      type: object
+      properties:
+        deleted: { type: integer }
+      required: [deleted]
+
+    CompanyImportInput:
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            type: object
+            properties:
+              name: { type: string }
+              industry: { type: string }
+              email: { type: string }
+              website: { type: string }
+              linkedin: { type: string }
+              employees: { type: integer }
+              hiringNow: { type: boolean }
+              recruitmentIntensity: { type: string }
+              potentialClient: { type: boolean }
+      required: [rows]
+
+    ImportResult:
+      type: object
+      properties:
+        imported: { type: integer }
+        skipped: { type: integer }
+        errors: { type: integer }
+      required: [imported, skipped, errors]
+
+    AIAnalysis:
+      type: object
+      properties:
+        companySummary: { type: string }
+        recruitmentStatus: { type: string }
+        industry: { type: string }
+        businessType: { type: string }
+        priorityScore: { type: integer }
+        leadScore: { type: integer }
+        hiringProbability: { type: integer }
+        outreachRecommendation: { type: string }
+        salesRecommendation: { type: string }
+        emailTone: { type: string }
+        nextAction: { type: string }
+      required: [companySummary, recruitmentStatus, industry, businessType, priorityScore, leadScore, hiringProbability, outreachRecommendation, salesRecommendation, emailTone, nextAction]
+
+    EmailGenerationInput:
+      type: object
+      properties:
+        companyId: { type: integer }
+        templateType: { type: string }
+        tone: { type: string }
+        additionalContext: { type: string }
+      required: [companyId, templateType, tone]
+
+    GeneratedEmail:
+      type: object
+      properties:
+        subject: { type: string }
+        body: { type: string }
+        signature: { type: string }
+      required: [subject, body, signature]
+
+    AIChatInput:
+      type: object
+      properties:
+        message: { type: string }
+        context: { type: string }
+      required: [message]
+
+    AIChatResponse:
+      type: object
+      properties:
+        response: { type: string }
+      required: [response]
+
+    Campaign:
+      type: object
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        description: { type: ["string", "null"] }
+        status: { type: string }
+        emailsSent: { type: integer }
+        emailsDraft: { type: integer }
+        replies: { type: integer }
+        openRate: { type: number }
+        replyRate: { type: number }
+        startedAt: { type: ["string", "null"], format: date-time }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+      required: [id, name, status, emailsSent, emailsDraft, replies, openRate, replyRate, createdAt, updatedAt]
+
+    CampaignInput:
+      type: object
+      properties:
+        name: { type: string }
+        description: { type: string }
+      required: [name]
+
+    CampaignUpdate:
+      type: object
+      properties:
+        name: { type: string }
+        description: { type: string }
+
+    CampaignStatusUpdate:
+      type: object
+      properties:
+        status: { type: string }
+      required: [status]
+
+    Email:
+      type: object
+      properties:
+        id: { type: integer }
+        companyId: { type: ["integer", "null"] }
+        campaignId: { type: ["integer", "null"] }
+        subject: { type: string }
+        body: { type: string }
+        signature: { type: ["string", "null"] }
+        templateType: { type: ["string", "null"] }
+        tone: { type: ["string", "null"] }
+        status: { type: string }
+        sentAt: { type: ["string", "null"], format: date-time }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+        company:
+          oneOf:
+            - $ref: "#/components/schemas/Company"
+            - type: "null"
+      required: [id, subject, body, status, createdAt, updatedAt]
+
+    EmailInput:
+      type: object
+      properties:
+        companyId: { type: integer }
+        campaignId: { type: integer }
+        subject: { type: string }
+        body: { type: string }
+        signature: { type: string }
+        templateType: { type: string }
+        tone: { type: string }
+        status: { type: string }
+      required: [subject, body]
+
+    EmailUpdate:
+      type: object
+      properties:
+        subject: { type: string }
+        body: { type: string }
+        signature: { type: string }
+        status: { type: string }
+
+    DashboardStats:
+      type: object
+      properties:
+        totalCompanies: { type: integer }
+        totalCampaigns: { type: integer }
+        totalEmailsSent: { type: integer }
+        totalDrafts: { type: integer }
+        totalReplies: { type: integer }
+        pendingEmails: { type: integer }
+        avgOpenRate: { type: number }
+        avgReplyRate: { type: number }
+        avgAiScore: { type: number }
+        hiringCompanies: { type: integer }
+        highPriorityCompanies: { type: integer }
+      required: [totalCompanies, totalCampaigns, totalEmailsSent, totalDrafts, totalReplies, pendingEmails, avgOpenRate, avgReplyRate, avgAiScore, hiringCompanies, highPriorityCompanies]
+
+    GroupedCount:
+      type: object
+      properties:
+        label: { type: string }
+        count: { type: integer }
+      required: [label, count]
+
+    MonthlyCount:
+      type: object
+      properties:
+        month: { type: string }
+        count: { type: integer }
+      required: [month, count]
+
+    Activity:
+      type: object
+      properties:
+        id: { type: integer }
+        type: { type: string }
+        description: { type: string }
+        entityId: { type: ["integer", "null"] }
+        entityType: { type: ["string", "null"] }
+        createdAt: { type: string, format: date-time }
+      required: [id, type, description, createdAt]

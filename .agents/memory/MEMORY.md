@@ -1,0 +1,1 @@
+- [Outreach App Architecture](outreach-app-arch.md) — AI Outreach SaaS: React+Clerk+Gemini+Drizzle stack, key decisions and gotchas

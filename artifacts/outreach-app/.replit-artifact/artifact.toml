@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/"
+title = "AI Outreach System"
+version = "1.0.0"
+id = "artifacts/outreach-app"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 20463
+
+[services.development]
+run = "pnpm --filter @workspace/outreach-app run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/outreach-app", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/outreach-app/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "20463"
+BASE_PATH = "/"

@@ -1,0 +1,728 @@
+You are a Senior Full Stack AI Engineer, AWS Cloud Architect and UI/UX Designer.
+
+Build a COMPLETE production-ready AI SaaS web application called
+
+AI-Powered Client Acquisition & Recruitment Outreach System
+
+The project must be much better than a college project.
+The final result should look like a startup product.
+
+----------------------------------------------------
+TECH STACK
+----------------------------------------------------
+
+Backend
+--------
+Python
+Flask
+SQLAlchemy
+SQLite (development)
+PostgreSQL ready
+Flask Login
+Flask Mail
+Google OAuth
+Google Gmail API
+Google Gemini AI API
+
+Frontend
+---------
+Bootstrap 5
+HTML5
+CSS3
+Javascript
+Chart.js
+DataTables
+SweetAlert2
+Animate.css
+FontAwesome
+ApexCharts
+
+AI
+----
+Google Gemini
+Company Intelligence
+Email Generation
+Lead Scoring
+Company Classification
+Recruitment Prediction
+Priority Prediction
+Reply Prediction
+AI Dashboard
+
+Cloud
+------
+GitHub Ready
+Docker Ready
+Render Ready
+Railway Ready
+Replit Ready
+
+----------------------------------------------------
+PROJECT STRUCTURE
+----------------------------------------------------
+
+app/
+
+auth/
+
+companies/
+
+campaigns/
+
+gmail/
+
+reports/
+
+dashboard/
+
+analytics/
+
+ai/
+
+templates/
+
+static/
+
+uploads/
+
+instance/
+
+----------------------------------------------------
+LOGIN SYSTEM
+----------------------------------------------------
+
+Professional Login page
+
+Google Login
+
+Email Login
+
+Remember Me
+
+Logout
+
+User Profile
+
+Profile Picture
+
+Google OAuth
+
+----------------------------------------------------
+DASHBOARD
+----------------------------------------------------
+
+Modern admin dashboard.
+
+Cards
+
+Total Companies
+
+Campaigns
+
+Emails Sent
+
+Drafts
+
+Replies
+
+Pending
+
+Open Rate
+
+Reply Rate
+
+AI Score
+
+Charts
+
+Monthly Campaigns
+
+Companies by Sector
+
+Priority Distribution
+
+Email Status
+
+Recent Activity
+
+Latest Companies
+
+Top Priority Companies
+
+Beautiful animations
+
+----------------------------------------------------
+COMPANY MANAGEMENT
+----------------------------------------------------
+
+Professional company table.
+
+Search
+
+Sort
+
+Filter
+
+Pagination
+
+Add Company
+
+Edit Company
+
+Delete Company
+
+Bulk Delete
+
+Import Excel
+
+Export Excel
+
+Export PDF
+
+Columns
+
+Company Name
+
+Industry
+
+Sector
+
+Email
+
+Website
+
+LinkedIn
+
+City
+
+Contact Person
+
+Employees
+
+Open Positions
+
+Hiring Now
+
+Recruitment Intensity
+
+Potential Client
+
+Priority
+
+AI Recommendation
+
+Status
+
+Created Date
+
+----------------------------------------------------
+EXCEL IMPORT
+----------------------------------------------------
+
+Allow uploading Excel.
+
+Automatically detect columns.
+
+Support
+
+Company_Name
+
+Company Name
+
+Industry
+
+Email
+
+Website
+
+LinkedIn
+
+Employees
+
+Hiring_Now
+
+Recruitment_Intensity
+
+Potential_Client
+
+Automatically map columns.
+
+Ignore duplicates.
+
+Show
+
+Rows Imported
+
+Rows Skipped
+
+Errors
+
+----------------------------------------------------
+AI FEATURES
+----------------------------------------------------
+
+Google Gemini should analyze every company.
+
+Generate
+
+Company Summary
+
+Recruitment Status
+
+Industry
+
+Business Type
+
+Priority Score
+
+Lead Score
+
+Hiring Probability
+
+Outreach Recommendation
+
+Sales Recommendation
+
+Email Tone
+
+Next Action
+
+Automatically save everything.
+
+----------------------------------------------------
+AI EMAIL WRITER
+----------------------------------------------------
+
+Generate personalized outreach emails.
+
+Different templates
+
+Cold Email
+
+HR Proposal
+
+Internship Proposal
+
+Recruitment Proposal
+
+Business Proposal
+
+Corporate Partnership
+
+Professional
+
+Friendly
+
+Formal
+
+Executive
+
+Allow regeneration.
+
+Allow editing.
+
+----------------------------------------------------
+EMAIL PREVIEW
+----------------------------------------------------
+
+Professional email preview.
+
+Rich HTML.
+
+Subject
+
+Body
+
+Signature
+
+Attachments Ready
+
+----------------------------------------------------
+GMAIL INTEGRATION
+----------------------------------------------------
+
+Connect Gmail.
+
+Google OAuth.
+
+Create Draft
+
+Send Email
+
+Bulk Send
+
+Rate Limiting
+
+Progress Bar
+
+Success Count
+
+Failed Count
+
+Retry Failed
+
+Campaign Status
+
+----------------------------------------------------
+CAMPAIGN MANAGER
+----------------------------------------------------
+
+Professional campaign page.
+
+Create Campaign
+
+Campaign Name
+
+Description
+
+Target Companies
+
+Start
+
+Pause
+
+Resume
+
+Stop
+
+Bulk Send
+
+Schedule Later
+
+Track
+
+Status
+
+Emails Sent
+
+Replies
+
+Drafts
+
+Open Rate
+
+Reply Rate
+
+Campaign Progress
+
+----------------------------------------------------
+REPORTS
+----------------------------------------------------
+
+Professional Reports Dashboard.
+
+Charts
+
+Companies
+
+Emails
+
+Replies
+
+Priority
+
+Sector
+
+Campaign Analytics
+
+Export PDF
+
+Export Excel
+
+Download Report
+
+----------------------------------------------------
+ANALYTICS
+----------------------------------------------------
+
+Interactive charts.
+
+Chart.js
+
+Bar
+
+Pie
+
+Line
+
+Donut
+
+Heatmap
+
+AI Score Trend
+
+Recruitment Trend
+
+Sector Distribution
+
+Hiring Companies
+
+Priority Distribution
+
+----------------------------------------------------
+SEARCH
+----------------------------------------------------
+
+Global search.
+
+Company
+
+Email
+
+Industry
+
+Sector
+
+Priority
+
+----------------------------------------------------
+FILTERS
+----------------------------------------------------
+
+By
+
+Sector
+
+Priority
+
+Status
+
+City
+
+Potential Client
+
+Hiring
+
+----------------------------------------------------
+AI COMPANY INSIGHTS
+----------------------------------------------------
+
+Each company page should show
+
+AI Summary
+
+Company Description
+
+Industry
+
+Website
+
+Hiring Analysis
+
+Recommended Strategy
+
+Priority
+
+Suggested Email
+
+Best Contact
+
+Growth
+
+Market Position
+
+----------------------------------------------------
+UI DESIGN
+----------------------------------------------------
+
+Modern SaaS Dashboard.
+
+Dark sidebar.
+
+Gradient cards.
+
+Rounded corners.
+
+Animations.
+
+Responsive.
+
+Professional.
+
+Looks similar to
+
+Notion
+
+HubSpot
+
+Salesforce
+
+Zoho CRM
+
+Apollo.io
+
+----------------------------------------------------
+SECURITY
+----------------------------------------------------
+
+CSRF
+
+Environment Variables
+
+Secret Keys
+
+SQL Injection Protection
+
+XSS Protection
+
+----------------------------------------------------
+DATABASE
+----------------------------------------------------
+
+Tables
+
+Users
+
+Companies
+
+Campaigns
+
+Emails
+
+Replies
+
+Activities
+
+Logs
+
+----------------------------------------------------
+EXTRAS
+----------------------------------------------------
+
+Notifications
+
+Activity Log
+
+Recent Actions
+
+Dark Mode
+
+Profile Page
+
+Settings
+
+AI Assistant Chat
+
+Bulk Operations
+
+Loading Animations
+
+Toast Notifications
+
+----------------------------------------------------
+AI CHATBOT
+----------------------------------------------------
+
+Floating AI Assistant.
+
+Can answer
+
+Company questions
+
+Campaign questions
+
+Generate emails
+
+Analyze company
+
+Summarize reports
+
+----------------------------------------------------
+FILE EXPORTS
+----------------------------------------------------
+
+PDF
+
+Excel
+
+CSV
+
+Professional formatting.
+
+----------------------------------------------------
+README
+----------------------------------------------------
+
+Generate a beautiful README.
+
+Project description
+
+Features
+
+Installation
+
+Screenshots
+
+Folder Structure
+
+API Keys
+
+Deployment
+
+GitHub
+
+----------------------------------------------------
+DEPLOYMENT
+----------------------------------------------------
+
+Ready for
+
+GitHub
+
+Render
+
+Railway
+
+Docker
+
+Replit
+
+----------------------------------------------------
+CODE QUALITY
+----------------------------------------------------
+
+Follow MVC.
+
+Use Blueprints.
+
+Modular architecture.
+
+No duplicated code.
+
+Proper comments.
+
+Type hints.
+
+Professional naming.
+
+----------------------------------------------------
+OUTPUT
+----------------------------------------------------
+
+Generate the ENTIRE project.
+
+Every folder.
+
+Every file.
+
+Every template.
+
+Every route.
+
+Every model.
+
+Every CSS file.
+
+Every JS file.
+
+Professional UI.
+
+Production-ready code.
+
+No placeholders.
+
+No "under development" pages.
+
+Everything must work.
+
+The project should look like a commercial SaaS application suitable for final-year engineering projects, resumes, internships, and GitHub portfolios.
